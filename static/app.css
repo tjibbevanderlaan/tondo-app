@@ -1,0 +1,234 @@
+body {
+    margin: 0;
+    background-color: #F4F4F4;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+main,
+aside,
+section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+main {
+    height: 100%;
+}
+
+section p {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+@media (min-width: 768px) {
+    section {
+        height: 40px;
+        flex-direction: row;
+    }
+    section span,
+    section p {
+        height: 100%;
+        line-height: 40px;
+    }
+}
+
+.loader {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background: #f4f4f4;
+    animation: rotate 2000ms linear infinite forwards;
+}
+
+.quad {
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 4px solid transparent;
+    border-left-color: #333;
+}
+
+.loader.animate .quad {
+    animation-fill-mode: forwards;
+    animation-duration: 1200ms;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.quad-1 {
+    animation-name: rotate1;
+}
+
+.quad-2 {
+    animation-name: rotate2;
+}
+
+.quad-3 {
+    animation-name: rotate3;
+}
+
+.quad-4 {
+    animation-name: rotate4;
+}
+
+#wca-board {
+    width: 100%;
+    height: 100%;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotateZ(0deg)
+    }
+    100% {
+        transform: rotateZ(360deg)
+    }
+}
+
+@keyframes rotate1 {
+    0% {
+        transform: rotateZ(0deg)
+    }
+    12.5% {
+        transform: rotateZ(90deg)
+    }
+    25% {
+        transform: rotateZ(180deg)
+    }
+    37.5% {
+        transform: rotateZ(270deg)
+    }
+    50%,
+    100% {
+        transform: rotateZ(360deg)
+    }
+}
+
+@keyframes rotate2 {
+    0%,
+    12.5% {
+        transform: rotateZ(0deg)
+    }
+    25% {
+        transform: rotateZ(90deg)
+    }
+    37.5% {
+        transform: rotateZ(180deg)
+    }
+    50% {
+        transform: rotateZ(270deg)
+    }
+    62.5%,
+    100% {
+        transform: rotateZ(360deg)
+    }
+}
+
+@keyframes rotate3 {
+    0%,
+    25% {
+        transform: rotateZ(0deg)
+    }
+    37.5% {
+        transform: rotateZ(90deg)
+    }
+    50% {
+        transform: rotateZ(180deg)
+    }
+    62.5% {
+        transform: rotateZ(270deg)
+    }
+    75%,
+    100% {
+        transform: rotateZ(360deg)
+    }
+}
+
+@keyframes rotate4 {
+    0%,
+    37.5% {
+        transform: rotateZ(0deg)
+    }
+    50% {
+        transform: rotateZ(90deg)
+    }
+    62.5% {
+        transform: rotateZ(180deg)
+    }
+    75% {
+        transform: rotateZ(270deg)
+    }
+    87.5%,
+    100% {
+        transform: rotateZ(360deg)
+    }
+}
+
+.hide {
+    display: none;
+}
+
+.wca-padding {
+    padding: 0px 18px 0px 18px;
+}
+
+.wca-marker-item {
+    flex: 1;
+    padding: 2px;
+    text-align: center;
+}
+
+.wca-marker-list {
+    display: flex;
+    justify-content: center;
+}
+
+#wca-board-container {
+    padding: 8px;
+    margin: 8px;
+    border: 1px solid #666;
+}
+
+#wca-board-holder {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.wca-fadeout {
+    opacity: 0;
+}
+
+.wca-fadein {
+    animation: fadeIn ease 200ms;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
