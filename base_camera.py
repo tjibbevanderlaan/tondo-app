@@ -78,7 +78,7 @@ class BaseCamera(object):
 
             # make sure to calibrate camera first, if needed
             BaseCamera.last_access = time.time()
-            
+
             # calibrate camera
             self.calibrate()
 

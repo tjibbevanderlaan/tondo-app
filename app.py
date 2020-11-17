@@ -36,9 +36,9 @@ def start_feed():
         if isinstance(err.details, BoardMarkerException):
             response['name'] = err.details.__class__.__name__
             response['details'] = err.details.props
-            
+
         # return response
-        return jsonify(response), 200    
+        return jsonify(response), 200
 
     return jsonify({'status': 'success'}), 200
 
@@ -51,4 +51,4 @@ def video_feed():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', threaded=True)
+    app.run(host='0.0.0.0', port=80, threaded=True)
