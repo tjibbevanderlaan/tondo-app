@@ -43,7 +43,7 @@ class Camera(BaseCamera):
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         # marker calibrate frame
-        detection = aruco.detectMarkers(gray_frame, aruco_dict, parameters=parameters, cameraMatrix=CAM_K, distCoeff=CAM_D)
+        detection = aruco.detectMarkers(gray_frame, aruco_dict, parameters=parameters)
         try:
             board = BoardMarkerRectangle(detection)
         except BoardMarkerException as err:
