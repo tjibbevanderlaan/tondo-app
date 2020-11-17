@@ -20,7 +20,6 @@ parameters = aruco.DetectorParameters_create()
 class Camera(BaseCamera):
     board_transform_matrix = None
     board_dimensions = None
-    is_calibrated = False
 
     def __init__(self):
         super(Camera, self).__init__()
@@ -28,10 +27,7 @@ class Camera(BaseCamera):
     @staticmethod
     def calibrate():
         print('camera_default.calibrate')
-        if Camera.is_calibrated:
-            return
 
-        print('camera_default.calibrate is not calibrated')
         camera = cv2.VideoCapture(0)
         camera.set(3, 1280)
         camera.set(4, 720)
@@ -45,7 +41,7 @@ class Camera(BaseCamera):
         # fisheye calibrate frame
         frame = cv2.remap(frame, map1, map2, interpolation=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT)
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            
+
         # marker calibrate frame
         detection = aruco.detectMarkers(gray_frame, aruco_dict, parameters=parameters, cameraMatrix=CAM_K, distCoeff=CAM_D)
         try:
@@ -68,7 +64,7 @@ class Camera(BaseCamera):
 
         if not Camera.is_calibrated:
             self.calibrate()
-        
+
         while True:
             # read current frame
             _, frame = camera.read()
@@ -85,4 +81,4 @@ class Camera(BaseCamera):
             # encode as a jpeg image and return it
             _, jpeg = cv2.imencode('.jpg', frame)
             yield jpeg.tobytes()
-            
+
