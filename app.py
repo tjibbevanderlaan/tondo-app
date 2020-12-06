@@ -23,7 +23,7 @@ def gen(camera):
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-@app.route('/videofeed_details'):
+@app.route('/videofeed_details')
 def videofeed_details():
     return jsonify(app_status), 200
 
