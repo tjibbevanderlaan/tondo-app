@@ -12,6 +12,7 @@
 var WhiteboardCameraApp = function() {
     this.statusbar = new StatusBar(this); // statusbar viewer
     this.board = new Board(this); // board viewer
+    this.feedurl = "/boardfeed"
 }
 
 /**
@@ -25,30 +26,40 @@ WhiteboardCameraApp.prototype.init = function() {
     statusbar.init();
     board.hide();
 
-    // fetch data from backend
-    fetch("/start_feed").then(function(response) {
-      if (response.status !== 200) {
-        console.log('Looks like there was a problem. Status Code: ' + response.status);
-        return;
-      }
+    // fetch status from backend
+    fetch(this.feedurl).then(function(response) {
+        // all good? show board
+        if(response.status === 200) return this.showBoard();
 
-      response.json().then(function(data) {
-        console.log(data)
-
-        if(data.status == 'failed') {
-          // Trying to start camera has failed
-          failure_type = data.name
-          missing_markers = data.details && data.details.missing
-          statusbar.failed(failure_type, missing_markers);
-        } else {
-          // Succeeded in loading camera, show whiteboard!
-          board.setSource('/video_feed')
-          statusbar.success();
-          board.show();
-        }
-      });
+        // not good? check details
+        fetch("/boardfeed_details").then(function(response) {
+            if(response.status !== 200) {
+                statusbar.failed();
+                console.log('Looks like there was a problem. Status Code: ' + response.status);
+                return;
+            }
+            
+            // check details to give feedback why failed
+            response.json().then(function(data) {
+                if(data.status !== 'failed') return this.showBoard(); 
+   
+                failure_type = data.name
+                missing_markers = data.details && data.details.missing
+                statusbar.failed(failure_type, missing_markers);
+            });
+        });
     });
- 
+}
+
+/**
+ * showBoard is the controller function which arranges that the viewer
+ * will show the board
+ */
+WhiteBoardCameraApp.prototype.showBoard = function() {
+    board = this.board;
+    board.setSource(this.feedurl);
+    statusbar.success();
+    board.show();
 }
 
 /**
