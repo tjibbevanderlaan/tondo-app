@@ -55,7 +55,7 @@ WhiteboardCameraApp.prototype.init = function() {
  * showBoard is the controller function which arranges that the viewer
  * will show the board
  */
-WhiteBoardCameraApp.prototype.showBoard = function() {
+WhiteboardCameraApp.prototype.showBoard = function() {
     board = this.board;
     board.setSource(this.feedurl);
     statusbar.success();
@@ -191,7 +191,7 @@ StatusBar.prototype._setStatus = function(status) {
  */
 StatusBar.prototype._setInitTimeout = function() {
     this.timer = [
-        window.setTimeout(this.delay.bind(this), 6000),
+        window.setTimeout(this.delay.bind(this), 10000),
         window.setTimeout(this.failed.bind(this), 60000)
     ]
 }
