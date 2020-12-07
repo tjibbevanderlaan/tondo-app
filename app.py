@@ -8,7 +8,6 @@ from boardmarker import BoardMarkerException
  # from camera_dummy import Camera
 
 app = Flask(__name__)
-app_status = {'status': 'initializing'}
 
 @app.route('/')
 def index():
@@ -23,9 +22,16 @@ def gen(camera):
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-@app.route('/videofeed_details')
-def videofeed_details():
-    return jsonify(app_status), 200
+@app.route('/boardfeed_details')
+def boardfeed_details():
+    try:
+        camera = Camera()
+    except Camera.CalibrateException as err:
+        # Could not calibrate board, so no content to display
+        error_message = {'status': 'failed', 'message': str(err)}
+        return jsonify(error_message), 200
+    else:
+        return jsonify({'status': 'success'}), 200
 
 # @app.route('/start_feed')
 # def start_feed():
@@ -47,19 +53,15 @@ def videofeed_details():
 #     return jsonify({'status': 'success'}), 200
 
 
-@app.route('/videofeed')
-def videofeed():
+@app.route('/boardfeed')
+def boardfeed():
     mimetype = 'multipart/x-mixed-replace; boundary=frame'
     try:
         camera = Camera()
     except Camera.CalibrateException as err:
         # Could not calibrate board, so no content to display
-        app_status = {'status': 'failed', 'message': str(err)}
-        response = make_response('', 204)
-        response.mimetype = mimetype
-        return reponse
+        return Response(status=204, mimetype=mimetype)
     else:
-        app_status = {'status': 'success'}
         """Video streaming route. Put this in the src attribute of an img tag."""
         return Response(gen(Camera()),mimetype=mimetype)
 
