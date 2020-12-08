@@ -12,54 +12,65 @@
 var WhiteboardCameraApp = function() {
     this.statusbar = new StatusBar(this); // statusbar viewer
     this.board = new Board(this); // board viewer
-    this.feedurl = "/boardfeed"
+    this.api = {
+        "feed": "/boardfeed", 
+        "details": "/boardfeed_details"
+    }
 }
 
 /**
  * init will start the WhiteBoardCameraApp
  */
-WhiteboardCameraApp.prototype.init = function() {
+WhiteboardCameraApp.prototype.launch = function() {
     // initialize board
     // set viewer
-    statusbar = this.statusbar;
-    board = this.board;
-    statusbar.init();
-    board.hide();
+    this.statusbar.init();
+    this.board.hide();
 
     // fetch status from backend
-    fetch(this.feedurl).then(function(response) {
+    fetch(this.api.feed).then(function(response) {
         // all good? show board
-        if(response.status === 200) return this.showBoard();
+        if(response.status === 200) return this.launchSucceeded();
 
         // not good? check details
-        fetch("/boardfeed_details").then(function(response) {
+        fetch(this.api.details).then(function(response) {
             if(response.status !== 200) {
-                statusbar.failed();
-                console.log('Looks like there was a problem. Status Code: ' + response.status);
+                launchFailed();
+                console.log('TondoNotReachable: Backend returns not 200 for detailed info. Status Code: ' + response.status)
                 return;
             }
             
             // check details to give feedback why failed
             response.json().then(function(data) {
-                if(data.status !== 'failed') return this.showBoard(); 
+                if(data.status !== 'failed') return this.launchSucceeded(); 
    
                 failure_type = data.name
-                missing_markers = data.details && data.details.missing
-                statusbar.failed(failure_type, missing_markers);
+                missing_markers = data.details && data.details.missing;
+                launchFailed(failure_type, missing_markers);
             });
         });
     });
 }
 
 /**
- * showBoard is the controller function which arranges that the viewer
+ * launchSucceeded is the controller function which arranges that the viewer
  * will show the board
  */
-WhiteboardCameraApp.prototype.showBoard = function() {
-    board = this.board;
-    board.setSource(this.feedurl);
-    statusbar.success();
-    board.show();
+WhiteboardCameraApp.prototype.launchSucceeded = function() {
+    this.board.setSource(this.feedurl);
+    this.statusbar.success();
+    this.board.show();
+}
+
+/**
+ * launchFailed is the controlelr function which makes sure the error
+ * message is correctly organized by te viewer
+ * @param  {String} failure_type    Optional: describes type of faulter
+ * @param  {String} missing_markers Optional: describes markers missing
+ */
+WhiteboardCameraApp.prototype.launchFailed = function(failure_type, missing_markers) {
+    this.statusbar.failed(failure_type, missing_markers);
+    if(consolemsg) console.log(consolemsg);
 }
 
 /**
@@ -114,7 +125,7 @@ StatusBar.prototype.init = function() {
  * takes longer then expected
  */
 StatusBar.prototype.delay = function() {
-    this._clearInitTimeout();
+    this._clearInitTimeout("delay");
     this._showEle(this.ele.statusbar);
     this.ele.init_text.innerText = "This takes longer then expected...";
     this.ele.init_loader.classList.remove('animate');
@@ -190,17 +201,27 @@ StatusBar.prototype._setStatus = function(status) {
  * something has failed
  */
 StatusBar.prototype._setInitTimeout = function() {
-    this.timer = [
-        window.setTimeout(this.delay.bind(this), 10000),
-        window.setTimeout(this.failed.bind(this), 60000)
-    ]
+    this.timer = {
+        'delay': window.setTimeout(function(){ this.delay()}.bind(this), 10000),
+        'failed': window.setTimeout(function(){ 
+            this.failed();
+            console.log("TondoTimeout: Backend responded not within 60s.");
+        }.bind(this), 60000)
+    }
 }
 
 /**
  * _clearInitTimeout will clear the timers set by _setInitTimoeut
  */
-StatusBar.prototype._clearInitTimeout = function() {
-    for (var i = 0; i < this.timer.length; i++) window.clearTimeout(this.timer[i]);
+StatusBar.prototype._clearInitTimeout = function(timerName) {
+    // if timer is specified, only clear this timer
+    if(timerName) return window.clearTimeout(this.timer[timerName]);
+
+    // if timer is not specified, reset all timers
+    for(var timer in this.timer) {
+        window.clearTimeout(this.timer[timer]);
+    }
+    
 }
 
 
