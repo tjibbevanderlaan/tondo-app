@@ -13,7 +13,7 @@ var WhiteboardCameraApp = function() {
     this.statusbar = new StatusBar(this); // statusbar viewer
     this.board = new Board(this); // board viewer
     this.api = {
-        "feed": "/boardfeed", 
+        "feed": "/boardfeed",
         "details": "/boardfeed_details"
     }
 }
@@ -22,18 +22,22 @@ var WhiteboardCameraApp = function() {
  * init will start the WhiteBoardCameraApp
  */
 WhiteboardCameraApp.prototype.launch = function() {
-    // initialize board
-    // set viewer
+    // initialize board, set viewer
     this.statusbar.init();
     this.board.hide();
 
+    // create refs
+    api = this.api;
+    launchFailed = this.launchFailed;
+    launchSucceeded = this.launchSucceeded;
+
     // fetch status from backend
-    fetch(this.api.feed).then(function(response) {
+    fetch(api.feed).then(function(response) {
         // all good? show board
-        if(response.status === 200) return this.launchSucceeded();
+        if(response.status === 200) return launchSucceeded();
 
         // not good? check details
-        fetch(this.api.details).then(function(response) {
+        fetch(api.details).then(function(response) {
             if(response.status !== 200) {
                 launchFailed();
                 console.log('TondoNotReachable: Backend returns not 200 for detailed info. Status Code: ' + response.status)
@@ -42,7 +46,7 @@ WhiteboardCameraApp.prototype.launch = function() {
             
             // check details to give feedback why failed
             response.json().then(function(data) {
-                if(data.status !== 'failed') return this.launchSucceeded(); 
+                if(data.status !== 'failed') return launchSucceeded(); 
    
                 failure_type = data.name
                 missing_markers = data.details && data.details.missing;
