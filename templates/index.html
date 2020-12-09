@@ -8,27 +8,27 @@
 </head>
 
 <body>
-    <main id="wca-main">
-        <section id="wca-statusbar">
-            <div id="wca-nojs">
+    <main id="tondo-main">
+        <section id="tondo-statusbar">
+            <div id="tondo-nojs">
                 <p>Please turn on JavaScript to start whiteboard.</p>
             </div>
-            <div id="wca-initializing" class="hide">
-                <div id="wca-initializing-loader" class="loader animate">
+            <div id="tondo-initializing" class="hide">
+                <div id="tondo-initializing-loader" class="loader animate">
                     <div class="quad-1 quad"></div>
                     <div class="quad-2 quad"></div>
                     <div class="quad-3 quad"></div>
                     <div class="quad-4 quad"></div>
                 </div>
-                <p id="wca-initializing-text" class="wca-padding">Starting camera...</p>
+                <p id="tondo-initializing-text" class="tondo-padding">Starting camera...</p>
             </div>
-            <div id="wca-failed-nomarkersfound" class="hide">
+            <div id="tondo-failed-nomarkersfound" class="hide">
                 <p>No markers have been found. Did you put on the light?</p>
             </div>
-            <div id="wca-failed-missingmarkers" class="hide">
-                <p>Make sure to bring <span id="wca-failed-missingmarkers-amount">_</span> marker(s) in the field-of-view of the camera and refresh page.</p>
-                <div class="wca-marker-list wca-padding">
-                    <div id="wca-marker-0" class="wca-marker-item hide">
+            <div id="tondo-failed-missingmarkers" class="hide">
+                <p>Make sure to bring <span id="tondo-failed-missingmarkers-amount">_</span> marker(s) in the field-of-view of the camera and refresh page.</p>
+                <div class="tondo-marker-list tondo-padding">
+                    <div id="tondo-marker-0" class="tondo-marker-item hide">
                         <svg viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" width="28px" height="28px">
                             <rect x="0" y="0" width="6" height="6" fill="black"></rect>
                             <rect width="1" height="1" x="1" y="1" fill="white"></rect>
@@ -49,7 +49,7 @@
                             <rect width="1" height="1" x="4" y="4" fill="black"></rect>
                         </svg>
                     </div>
-                    <div id="wca-marker-1" class="wca-marker-item hide">
+                    <div id="tondo-marker-1" class="tondo-marker-item hide">
                         <svg viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" width="28px" height="28px">
                             <rect x="0" y="0" width="6" height="6" fill="black"></rect>
                             <rect width="1" height="1" x="1" y="1" fill="black"></rect>
@@ -70,7 +70,7 @@
                             <rect width="1" height="1" x="4" y="4" fill="black"></rect>
                         </svg>
                     </div>
-                    <div id="wca-marker-2" class="wca-marker-item hide">
+                    <div id="tondo-marker-2" class="tondo-marker-item hide">
                         <svg viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" width="28px" height="28px">
                             <rect x="0" y="0" width="6" height="6" fill="black"></rect>
                             <rect width="1" height="1" x="1" y="1" fill="black"></rect>
@@ -91,7 +91,7 @@
                             <rect width="1" height="1" x="4" y="4" fill="white"></rect>
                         </svg>
                     </div>
-                    <div id="wca-marker-3" class="wca-marker-item hide">
+                    <div id="tondo-marker-3" class="tondo-marker-item hide">
                         <svg viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" width="28px" height="28px">
                             <rect x="0" y="0" width="6" height="6" fill="black"></rect>
                             <rect width="1" height="1" x="1" y="1" fill="white"></rect>
@@ -114,23 +114,23 @@
                     </div>
                 </div>
             </div>
-            <div id="wca-failed-default" class="hide">
+            <div id="tondo-failed-default" class="hide">
                 <p>Failed to start camera. Refresh page to try again.</p>
             </div>
         </section>
-        <section id="wca-board">
-            <img id="wca-board-holder" />
+        <section id="tondo-board">
+            <img id="tondo-board-holder" />
         </section>
     </main>
 </body>
 <script type="text/javascript" src="/static/app.js"></script>
 <script type="text/javascript">
 /**
- * Initialize WhiteboardCameraApp when DOM is loaded
+ * Initialize Tondo when DOM is loaded
  */
 window.addEventListener('DOMContentLoaded', () => {
-    whiteboard = new WhiteboardCameraApp();
-    whiteboard.launch();
+    app = new TondoAppController();
+    app.launch();
 });
 </script>
 

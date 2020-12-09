@@ -92,7 +92,7 @@ section p {
     animation-name: rotate4;
 }
 
-#wca-board {
+#tondo-board {
     width: 100%;
     height: 100%;
 }
@@ -189,38 +189,38 @@ section p {
     display: none;
 }
 
-.wca-padding {
+.tondo-padding {
     padding: 0px 18px 0px 18px;
 }
 
-.wca-marker-item {
+.tondo-marker-item {
     flex: 1;
     padding: 2px;
     text-align: center;
 }
 
-.wca-marker-list {
+.tondo-marker-list {
     display: flex;
     justify-content: center;
 }
 
-#wca-board-container {
+#tondo-board-container {
     padding: 8px;
     margin: 8px;
     border: 1px solid #666;
 }
 
-#wca-board-holder {
+#tondo-board-holder {
     width: 100%;
     height: 100%;
     object-fit: contain;
 }
 
-.wca-fadeout {
+.tondo-fadeout {
     opacity: 0;
 }
 
-.wca-fadein {
+.tondo-fadein {
     animation: fadeIn ease 200ms;
 }
 
