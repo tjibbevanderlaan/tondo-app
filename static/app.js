@@ -1,4 +1,8 @@
 /**
+ * Tondo
+ * An app to stream whiteboard content captured by a webcam
+ * This app is the frontend app which displays the camera feed.
+ * 
  * Tjibbe van der Laan (2020)
  * info@tjibbevanderlaan.nl
  */

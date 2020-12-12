@@ -1,3 +1,14 @@
+""" BaseCamera
+    The BaseCamera-class processes frames of a camera. This base camera is
+    used to create a generic implementation for different types of cameras.
+
+    This class is written by Miguel Grinberg. More information can be found here:
+    https://blog.miguelgrinberg.com/post/flask-video-streaming-revisited
+
+    The class has been extended to incorporate support for calibrating the camera
+    when intializing the camera.
+    Tjibbe van der Laan (2020) """
+
 import time
 import threading
 
@@ -10,7 +21,7 @@ except ImportError:
         from _thread import get_ident
 
 
-class CameraEvent(object):
+class CameraEvent():
     """An Event-like class that signals all active clients when a new frame is
     available.
     """
@@ -52,7 +63,10 @@ class CameraEvent(object):
         self.events[get_ident()][0].clear()
 
 
-class BaseCamera(object):
+class BaseCamera():
+    """BaseCamera is used to implement a camera and serves the video frames
+    of the camera.
+    """
     thread = None  # background thread that reads frames from camera
     frame = None  # current frame is stored here by background thread
     last_access = 0  # time of last client access to the camera
@@ -60,17 +74,17 @@ class BaseCamera(object):
 
     class BaseCameraException(Exception):
         """ Something has gone wrong when fetching frames """
-        pass
 
     class CalibrateException(BaseCameraException):
         """ Something has gone wrong while calibrating the camera """
-        def __init__(self, message, details={}):
+        def __init__(self, message, details=None):
 
             # Call the base class constructor with the parameters it needs
             super().__init__(message)
 
             # Now for your custom code...
-            self.details = details
+            if details:
+                self.details = details
 
     def __init__(self):
         """Start the background camera thread if it isn't running yet."""
@@ -83,13 +97,12 @@ class BaseCamera(object):
             self.calibrate()
 
             # start background frame thread
-            BaseCamera.thread = threading.Thread(target=self._thread) 
+            BaseCamera.thread = threading.Thread(target=self._thread)
             BaseCamera.thread.start()
 
             # wait until frames are available
             while self.get_frame() is None:
                 time.sleep(0)
-
 
     def get_frame(self):
         """Return the current camera frame."""

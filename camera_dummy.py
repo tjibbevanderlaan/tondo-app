@@ -1,6 +1,9 @@
+#!/usr/bin/env python
+""" CameraDummy
+    Dummy implementation of BaseCamera for testing purposes.
+    Tjibbe van der Laan (2020) """
 import time
 from base_camera import BaseCamera
-
 
 class Camera(BaseCamera):
     """An emulated camera implementation that streams a repeated sequence of

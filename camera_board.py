@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+""" CameraBoard
+    Implementation of BaseCamera of the actual camera used for the whiteboard.
+    This implementation is especially optimized for an INTERFIX 2k webcam.
+    Tjibbe van der Laan (2020) """
+
 import cv2
 import cv2.aruco as aruco
 import numpy as np
