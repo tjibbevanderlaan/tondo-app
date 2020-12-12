@@ -1,0 +1,12 @@
+[Unit]
+Description=Web app to stream whiteboard content captured by a webcam
+After=network.target
+
+[Service]
+User=pi
+WorkingDirectory=/home/pi/tondo-app/
+ExecStart=/home/pi/tondo-app/venv/bin/python /home/pi/tondo-app/app.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

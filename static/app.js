@@ -2,16 +2,16 @@
  * Tondo
  * An app to stream whiteboard content captured by a webcam
  * This app is the frontend app which displays the camera feed.
- * 
+ *
  * Tjibbe van der Laan (2020)
  * info@tjibbevanderlaan.nl
  */
 
 /**
- * TondoAppController is the controller which 
+ * TondoAppController is the controller which
  * fetches the camera feed. If this fails, the controller
  * will fetch details to inform the user why calibration
- * of the camera failed. 
+ * of the camera failed.
  */
 var TondoAppController = function() {
     this.statusbar = new TondoStatusBar(this); // statusbar viewer
@@ -43,11 +43,11 @@ TondoAppController.prototype.launch = function() {
                             'for detailed info. Status Code: ' + response.status);
                 return;
             }
-            
+
             // check details to give feedback why failed
             response.json().then(function(data) {
-                if(data.status !== 'failed') return launchSucceeded(); 
-   
+                if(data.status !== 'failed') return tac.launchSucceeded();
+
                 failure_type = data.name
                 missing_markers = data.details && data.details.missing;
                 tac.launchFailed('', failure_type, missing_markers);
@@ -80,7 +80,7 @@ TondoAppController.prototype.launchFailed = function(err, failure_type, missing_
 /**
  * _getElement is a helper function to retrieve DOM element
  * @param  {String} name The name of the whiteboard-element to be found
- * @return {DOMelement}      DOMElement 
+ * @return {DOMelement}      DOMElement
  */
 TondoAppController.prototype._getElement = function(name) {
     return document.getElementById('tondo-' + name);
@@ -173,7 +173,7 @@ TondoStatusBar.prototype.failed = function(failure_type, missingmarkers) {
 }
 
 /**
- * _showEle will display an DOM element 
+ * _showEle will display an DOM element
  * @param  {DOMElement} element DOM element to display
  */
 TondoStatusBar.prototype._showEle = function(element) {
@@ -225,7 +225,6 @@ TondoStatusBar.prototype._clearInitTimeout = function(timerName) {
     for(var timer in this.timer) {
         window.clearTimeout(this.timer[timer]);
     }
-    
 }
 
 /**
@@ -246,7 +245,7 @@ TondoBoard.prototype.setSource = function(sourceUrl) {
 }
 
 /**
- * show will show the TondoBoard 
+ * show will show the TondoBoard
  */
 TondoBoard.prototype.show = function() {
     this.element.classList.remove('hide');
