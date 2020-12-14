@@ -2,6 +2,8 @@
 
 ### An app to stream whiteboard content captured by a webcam.
 
+![Tondo example in browser](https://github.com/tjibbevanderlaan/tondo-app/blob/development/docs/example_tondo.gif?raw=true)
+
 ## Installing dependencies
 1. Clone this repo
 ```bash
@@ -31,7 +33,7 @@ gunicorn --worker-class gevent --threads 5 --workers 1 --bind 0.0.0.0:80 app:app
 ```
 
 ## Run as service
-This service file is written to run Tondo as a service on a Raspberry Pi.
+A service file `tondo.service` is written to run Tondo as a service on a Raspberry Pi. Please use these instructions to install the service file. 
 ```bash
 cp tondo.service /etc/system/systemd
 cd /etc/systemd/systemd
