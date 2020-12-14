@@ -32,8 +32,6 @@ class Camera(BaseCamera):
 
     @staticmethod
     def calibrate():
-        print('camera_default.calibrate')
-
         camera = cv2.VideoCapture(0)
         camera.set(3, 1280)
         camera.set(4, 720)
