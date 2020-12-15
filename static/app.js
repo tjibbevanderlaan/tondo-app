@@ -39,8 +39,8 @@ TondoAppController.prototype.launch = function() {
         // not good? check details
         fetch(tac.api.details).then(function(response) {
             if(response.status !== 200) {
-                tac.launchFailed('TondoNotReachable: Backend returns not 200 ' +
-                            'for detailed info. Status Code: ' + response.status);
+                tac.launchFailed('Backend does not respond succesfully. ' +
+                            'Status Code: ' + response.status);
                 return;
             }
 
@@ -63,7 +63,7 @@ TondoAppController.prototype.launch = function() {
 TondoAppController.prototype.launchSucceeded = function() {
     this.board.setSource(this.api.feed);
     this.statusbar.success();
-    this.board.show();
+    this.board.showOnLoad(this.launchFailed('Could not load videofeed.'));
 }
 
 /**
@@ -73,7 +73,7 @@ TondoAppController.prototype.launchSucceeded = function() {
  * @param  {String} missing_markers Optional: describes markers missing
  */
 TondoAppController.prototype.launchFailed = function(err, failure_type, missing_markers) {
-    if(err) console.log(err);
+    if(err) console.log('TondoAppController: ' + err);
     this.statusbar.failed(failure_type, missing_markers);
 }
 
@@ -209,7 +209,7 @@ TondoStatusBar.prototype._setInitTimeout = function() {
         'delay': window.setTimeout(function(){ this.delay()}.bind(this), 10000),
         'failed': window.setTimeout(function(){ 
             this.failed();
-            console.log("TondoTimeout: Backend responded not within 60s.");
+            console.log("TondoAppController: Backend did not respond within 60s.");
         }.bind(this), 60000)
     }
 }
@@ -242,6 +242,17 @@ var TondoBoard = function(mainApp) {
  */
 TondoBoard.prototype.setSource = function(sourceUrl) {
     this.holder.src = sourceUrl;
+}
+
+/**
+ * showOnLoad will trigger to show the board, once the image
+ * has been fully loaded by the DOM (so it needs to be fully fetched
+ * before triggering the show function)
+ * @param {Function} onError Callback in case loading was not succesfull
+ */
+TondoBoard.prototype.showOnLoad = function(onError) {
+    this.holder.onLoad = this.show;
+    this.holder.onError = onError;
 }
 
 /**
