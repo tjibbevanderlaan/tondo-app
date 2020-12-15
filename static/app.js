@@ -31,28 +31,23 @@ TondoAppController.prototype.launch = function() {
     this.board.hide();
     tac = this;
 
-    // fetch status from backend
-    fetch(tac.api.feed).then(function(response) {
-        // all good? show board
-        if(response.status === 200) return tac.launchSucceeded();
+    // not good? check details
+    fetch(tac.api.details).then(function(response) {
+        if(response.status !== 200) {
+            tac.launchFailed('Backend does not respond succesfully. ' +
+                        'Status Code: ' + response.status);
+            return;
+        }
 
-        // not good? check details
-        fetch(tac.api.details).then(function(response) {
-            if(response.status !== 200) {
-                tac.launchFailed('Backend does not respond succesfully. ' +
-                            'Status Code: ' + response.status);
-                return;
-            }
+        // check payload to retrieve status of board
+        response.json().then(function(data) {
+            if(data.status !== 'failed') return tac.launchSucceeded();
 
-            // check details to give feedback why failed
-            response.json().then(function(data) {
-                if(data.status !== 'failed') return tac.launchSucceeded();
-
-                failure_type = data.name
-                missing_markers = data.details && data.details.missing;
-                tac.launchFailed('', failure_type, missing_markers);
-            });
-        }).catch(function(err){ tac.launchFailed(err) });
+            // whoops, it failed! Show some insights (if available)
+            failure_type = data.name
+            missing_markers = data.details && data.details.missing;
+            tac.launchFailed('', failure_type, missing_markers);
+        });
     }).catch(function(err){ tac.launchFailed(err) });
 }
 
